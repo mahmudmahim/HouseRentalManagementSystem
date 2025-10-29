@@ -1,0 +1,73 @@
+﻿@page
+@model HouseRentalWeb.Pages.Auth.SignUpModel
+@{
+    Layout = "_Layout";
+}
+
+<!-- Header Strip -->
+<div class="auth-header"></div>
+
+<div class="auth-container">
+    <h2>Create Account</h2>
+    <p class="text-muted mb-4">Sign up to start listing or renting properties</p>
+
+    <!-- Role Selection -->
+    <div class="role-selection d-flex justify-content-between mb-4">
+        <div id="tenantRole" class="role-card active text-center flex-fill me-2" onclick="selectRole('tenant')">
+            <i class="bi bi-person"></i>
+            <h6 class="fw-semibold mt-1 mb-0">Tenant</h6>
+            <small class="text-muted">Looking for rentals</small>
+        </div>
+        <div id="ownerRole" class="role-card text-center flex-fill ms-2" onclick="selectRole('owner')">
+            <i class="bi bi-building"></i>
+            <h6 class="fw-semibold mt-1 mb-0">Owner</h6>
+            <small class="text-muted">List properties</small>
+        </div>
+    </div>
+
+    <form method="post" class="auth-form">
+        <input type="hidden" id="UserRole" name="UserRole" value="tenant" />
+
+        <div class="row g-2">
+            <div class="col-md-6">
+                <input type="text" class="form-control" placeholder="Full Name" required />
+            </div>
+            <div class="col-md-6">
+                <input type="email" class="form-control" placeholder="Email" required />
+            </div>
+
+            <div class="col-md-6">
+                <input type="text" class="form-control" placeholder="Address" />
+            </div>
+            <div class="col-md-6">
+                <input type="text" class="form-control" placeholder="NID No" />
+            </div>
+
+            <div class="col-md-6">
+                <input type="password" class="form-control" placeholder="Password" required />
+            </div>
+            <div class="col-md-6">
+                <input type="password" class="form-control" placeholder="Confirm Password" required />
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-gradient mt-3">Create Account</button>
+    </form>
+
+    <div class="auth-footer text-center mt-3">
+        Already have an account? <a asp-page="/Auth/Login">Sign In</a>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function selectRole(role) {
+            document.getElementById('UserRole').value = role;
+
+            document.getElementById('tenantRole').classList.remove('active');
+            document.getElementById('ownerRole').classList.remove('active');
+
+            document.getElementById(role + 'Role').classList.add('active');
+        }
+    </script>
+}
