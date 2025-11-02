@@ -1,0 +1,239 @@
+﻿@page
+@model TenantDashboardModel
+@{
+    ViewData["Title"] = "Tenant Dashboard";
+}
+
+
+
+<!-- ===== Page Body ===== -->
+<div class="container py-5">
+    <!-- Welcome Message -->
+    <div class="text-center mb-5">
+        <h2 class="fw-bold">Welcome, <span class="gradient-text">@Model.TenantName!</span></h2>
+        <p class="text-muted">Track your rental activity and explore available listings</p>
+    </div>
+
+    <!-- Stat Cards -->
+    <div class="row g-4 justify-content-center mb-5">
+        <!-- Sent Requests -->
+        <div class="col-md-4">
+            <div class="card stat-card text-center p-4 shadow-sm border-0 rounded-4">
+                <div class="icon-wrap bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width:60px;height:60px;">
+                    <i class="bi bi-send fs-3 text-primary"></i>
+                </div>
+                <h5 class="fw-semibold">Requests Sent</h5>
+                <h2 class="fw-bold gradient-text">12</h2>
+            </div>
+        </div>
+
+        <!-- Approved Requests -->
+        <div class="col-md-4">
+            <div class="card stat-card text-center p-4 shadow-sm border-0 rounded-4">
+                <div class="icon-wrap bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width:60px;height:60px;">
+                    <i class="bi bi-check2-circle fs-3 text-success"></i>
+                </div>
+                <h5 class="fw-semibold">Approved</h5>
+                <h2 class="fw-bold gradient-text">5</h2>
+            </div>
+        </div>
+
+        <!-- Rejected Requests -->
+        <div class="col-md-4">
+            <div class="card stat-card text-center p-4 shadow-sm border-0 rounded-4">
+                <div class="icon-wrap bg-danger bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width:60px;height:60px;">
+                    <i class="bi bi-x-circle fs-3 text-danger"></i>
+                </div>
+                <h5 class="fw-semibold">Rejected</h5>
+                <h2 class="fw-bold gradient-text">3</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Search & Filter Bar ===== -->
+<div class="container my-4">
+    <div class="d-flex align-items-center bg-white shadow-sm rounded-4 p-2 pe-3">
+        <div class="input-group flex-grow-1">
+            <span class="input-group-text bg-transparent border-0">
+                <i class="bi bi-search text-secondary"></i>
+            </span>
+            <input type="text" class="form-control border-0 shadow-none" placeholder="Search property...">
+        </div>
+        <button class="btn btn-gradient ms-2 px-4 rounded-3" data-bs-toggle="modal" data-bs-target="#filterModal">
+            <i class="bi bi-sliders"></i> Filters
+        </button>
+    </div>
+</div>
+
+<!-- ===== Filter Modal ===== -->
+<div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 rounded-4 shadow-lg">
+            <div class="modal-header border-0">
+                <h5 class="modal-title fw-semibold" id="filterModalLabel">Filter Properties</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="row g-3">
+
+                    <!-- District -->
+                    <div class="col-md-4">
+                        <label class="form-label small text-muted">District</label>
+                        <select class="form-select form-select-sm rounded-3">
+                            <option>All</option>
+                            <option>Dhaka</option>
+                            <option>Chattogram</option>
+                            <option>Rajshahi</option>
+                        </select>
+                    </div>
+
+                    <!-- Area -->
+                    <div class="col-md-4">
+                        <label class="form-label small text-muted">Area</label>
+                        <select class="form-select form-select-sm rounded-3">
+                            <option>All</option>
+                            <option>Banani</option>
+                            <option>Gulshan</option>
+                            <option>Dhanmondi</option>
+                        </select>
+                    </div>
+
+                    <!-- Sub Area -->
+                    <div class="col-md-4">
+                        <label class="form-label small text-muted">Sub Area</label>
+                        <select class="form-select form-select-sm rounded-3">
+                            <option>All</option>
+                            <option>Block A</option>
+                            <option>Block B</option>
+                            <option>Block C</option>
+                        </select>
+                    </div>
+
+                    <!-- Date Filters -->
+                    <div class="col-md-6">
+                        <label class="form-label small text-muted">Available From</label>
+                        <input type="date" class="form-control form-control-sm rounded-3">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label small text-muted">Available To</label>
+                        <input type="date" class="form-control form-control-sm rounded-3">
+                    </div>
+
+                    <!-- Price Range -->
+                    <div class="col-md-6">
+                        <label class="form-label small text-muted">Price Range (৳)</label>
+                        <input type="number" class="form-control" min="8000" max="80000" step="2000" value="8000">
+                    </div>
+
+                    <!-- Square Feet -->
+                    <div class="col-md-6">
+                        <label class="form-label small text-muted">Square Feet</label>
+                        <input type="number" class="form-control" min="800" max="3000" step="100" value="1200">
+                    </div>
+
+                    <!-- Bedrooms -->
+                    <div class="col-md-6">
+                        <label class="form-label small text-muted">Bedrooms</label>
+                        <select class="form-select form-select-sm rounded-3">
+                            <option>Any</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4+</option>
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-outline-secondary btn-sm rounded-3" data-bs-dismiss="modal">Reset</button>
+                <button type="button" class="btn btn-gradient btn-sm rounded-3 px-4" data-bs-dismiss="modal">Apply</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- ===== Property Tabs ===== -->
+<div class="container mb-5">
+    <ul class="nav nav-pills justify-content-center mb-4" id="tenantTabs" role="tablist">
+        <li class="nav-item">
+            <button class="nav-link active" id="all-tab" data-bs-toggle="pill" data-bs-target="#allProperties" type="button">All Properties</button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link" id="my-tab" data-bs-toggle="pill" data-bs-target="#myRequests" type="button">My Requests</button>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <!-- All Properties -->
+        <div class="tab-pane fade show active" id="allProperties">
+            <div class="row g-4">
+                @foreach (var property in Model.AllProperties)
+                {
+                    <div class="col-md-4 col-sm-6">
+                        <div class="property-card card border-0 shadow-sm rounded-4 overflow-hidden h-100">
+                            <div class="property-image position-relative">
+                                <img src="@property.ImageUrl" class="w-100" alt="Property" />
+                                <span class="fav-icon" title="Add to Wishlist"><i class="bi bi-heart"></i></span>
+                            </div>
+                            <div class="card-body">
+                                <h6 class="fw-semibold">@property.Title</h6>
+                                <p class="text-muted small mb-1">@property.Size sqft · $@property.Price/month</p>
+                                <p class="text-muted small mb-3"><i class="bi bi-geo-alt"></i> @property.Location</p>
+                                <button class="btn btn-gradient btn-sm w-100"
+                                        data-bs-toggle="toast" data-bs-target="#toastRequestSent">
+                                    Send Request
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- My Requests -->
+        <div class="tab-pane fade" id="myRequests">
+            @if (Model.MyRequests.Any())
+            {
+                <div class="row g-4">
+                    @foreach (var req in Model.MyRequests)
+                    {
+                        <div class="col-md-4">
+                            <div class="card shadow-sm border-0 rounded-4">
+                                <div class="card-body">
+                                    <h6 class="fw-semibold">@req.PropertyTitle</h6>
+                                    <p class="text-muted small mb-1">@req.Location</p>
+                                    <span class="badge bg-success-subtle text-success">@req.Status</span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="text-center text-muted py-5">
+                    <i class="bi bi-inbox fs-1 d-block mb-3"></i>
+                    <p>You haven’t sent any requests yet.</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- ===== Toast Notification ===== -->
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="toastRequestSent" class="toast align-items-center text-bg-success border-0" role="alert">
+        <div class="d-flex">
+            <div class="toast-body">
+                ✅ Request sent successfully!
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+        </div>
+    </div>
+</div>
