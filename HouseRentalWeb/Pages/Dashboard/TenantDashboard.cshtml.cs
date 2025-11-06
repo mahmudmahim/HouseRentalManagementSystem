@@ -14,9 +14,9 @@ namespace HouseRentalWeb.Pages.Dashboard
             // Mock Data
             AllProperties = new List<PropertyModel>
         {
-            new() { Title="Modern Apartment in Banani", Price=500, Size=1200, Location="Banani, Dhaka", ImageUrl="/images/apt1.jpg" },
-            new() { Title="Studio in Dhanmondi", Price=350, Size=900, Location="Dhanmondi, Dhaka", ImageUrl="/images/apt2.jpg" },
-            new() { Title="Luxury Condo in Gulshan", Price=800, Size=1500, Location="Gulshan, Dhaka", ImageUrl="/images/apt3.jpg" }
+            new() { Title="Modern Apartment in Banani", Price=500, Size=1200, Location="Banani, Dhaka", ImageUrl="/images/home01.jpg" },
+            new() { Title="Studio in Dhanmondi", Price=350, Size=900, Location="Dhanmondi, Dhaka", ImageUrl="/images/home02.jpeg" },
+            new() { Title="Luxury Condo in Gulshan", Price=800, Size=1500, Location="Gulshan, Dhaka", ImageUrl="/images/home03.jpg" }
         };
 
             MyRequests = new List<RequestModel>
