@@ -5,7 +5,7 @@ namespace HouseRentalWeb.Pages.Dashboard
 {
     public class TenantDashboardModel : PageModel
     {
-        public string TenantName = "Khairuzzaman";
+        public string TenantName = "User";
         public List<PropertyModel> AllProperties { get; set; }
         public List<RequestModel> MyRequests { get; set; }
 
