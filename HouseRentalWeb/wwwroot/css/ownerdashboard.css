@@ -1,0 +1,76 @@
+﻿/* Dashboard layout styles (glossy dark sidebar + content) */
+.dashboard-body {
+    background: #f4f6f9;
+    font-family: 'Inter', sans-serif;
+}
+
+
+/* Content area */
+.content-area {
+    min-height: 100vh;
+    background: #f9fbfe;
+}
+
+/* KPI stat cards */
+.stat-card {
+    border-radius: 12px;
+    border: 1px solid rgba(0,0,0,0.04);
+    background: #fff;
+    box-shadow: 0 6px 18px rgba(31,45,77,0.06);
+}
+
+.stat-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+}
+
+.bg-gradient-primary {
+    background: linear-gradient(135deg,#6c63ff,#4fd1c5);
+}
+
+.bg-gradient-info {
+    background: linear-gradient(135deg,#4fd1c5,#60a5fa);
+}
+
+.bg-gradient-success {
+    background: linear-gradient(135deg,#34d399,#10b981);
+}
+
+.bg-gradient-danger {
+    background: linear-gradient(135deg,#fb7185,#f97316);
+}
+
+/* Property card */
+.property-card {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 6px 20px rgba(31,45,77,0.06);
+    transition: transform .2s ease;
+}
+
+    .property-card:hover {
+        transform: translateY(-6px);
+    }
+
+/* Badges */
+.badge {
+    border-radius: 8px;
+    padding: .35rem .6rem;
+}
+
+/* Small responsive fix */
+@media (max-width: 992px) {
+    .sidebar {
+        display: none;
+    }
+
+    .content-area {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}
