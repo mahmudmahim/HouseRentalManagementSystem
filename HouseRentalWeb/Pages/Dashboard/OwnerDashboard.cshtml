@@ -1,0 +1,260 @@
+﻿@page
+@model HouseRentalWeb.Pages.Dashboard.OwnerDashboardModel
+@{
+    ViewData["Title"] = "Owner Dashboard";
+}
+
+<div class="container-fluid">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="mb-0">Owner Dashboard</h3>
+            <small class="text-muted">Overview & request management</small>
+        </div>
+        <div class="d-flex gap-2">
+            <a asp-page="/Owner/AddProperty" class="btn  btn-primary btn-sm">List Property</a>
+            <div class="btn btn-gradient btn-sm">Credits: <strong class="ms-2">@Model.CreditBalance</strong></div>
+        </div>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-3">
+            <div class="card stat-card p-3 h-100">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="stat-icon rounded-circle bg-gradient-primary text-white d-flex align-items-center justify-content-center">
+                        <i class="bi bi-wallet2 fs-4"></i>
+                    </div>
+                    <div>
+                        <div class="text-muted small">Wallet Credits</div>
+                        <div class="h5 fw-bold">@Model.CreditBalance</div>
+                        <div class="small text-muted">Each listing costs 10 credits</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card stat-card p-3 h-100">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="stat-icon rounded-circle bg-gradient-info text-white d-flex align-items-center justify-content-center">
+                        <i class="bi bi-inbox fs-4"></i>
+                    </div>
+                    <div>
+                        <div class="text-muted small">Incoming Requests</div>
+                        <div class="h5 fw-bold">@Model.PendingRequests</div>
+                        <div class="small text-muted">New since last week: @Model.PendingDelta%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card stat-card p-3 h-100">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="stat-icon rounded-circle bg-gradient-success text-white d-flex align-items-center justify-content-center">
+                        <i class="bi bi-check2-circle fs-4"></i>
+                    </div>
+                    <div>
+                        <div class="text-muted small">Approved</div>
+                        <div class="h5 fw-bold">@Model.ApprovedRequests</div>
+                        <div class="small text-muted">This month</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card stat-card p-3 h-100">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="stat-icon rounded-circle bg-gradient-danger text-white d-flex align-items-center justify-content-center">
+                        <i class="bi bi-x-circle fs-4"></i>
+                    </div>
+                    <div>
+                        <div class="text-muted small">Rejected</div>
+                        <div class="h5 fw-bold">@Model.RejectedRequests</div>
+                        <div class="small text-muted">This month</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabs -->
+    <ul class="nav nav-tabs mb-3" id="ownerTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="requests-tab" data-bs-toggle="tab" data-bs-target="#requests" type="button">Requests</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="properties-tab" data-bs-toggle="tab" data-bs-target="#properties" type="button">Properties</button>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <!-- Requests Tab -->
+        <div class="tab-pane fade show active" id="requests" role="tabpanel">
+            <div class="card mb-3 p-3">
+                <div class="d-flex mb-2 gap-2">
+                    <input class="form-control form-control-sm me-2" placeholder="Search name or phone..." bind="Model.SearchQuery" />
+                    <select class="form-select form-select-sm w-auto" bind="Model.FilterStatus">
+                        <option value="">All</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Approved">Approved</option>
+                        <option value="Rejected">Rejected</option>
+                    </select>
+                    <button class="btn btn-outline-secondary btn-sm" onclick="Model.ResetFilters">Reset</button>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Tenant</th>
+                                <th>Property</th>
+                                <th>Location</th>
+                                <th>Contact</th>
+                                <th>Score</th>
+                                <th>Status</th>
+                                <th class="text-end">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var r in Model.Requests)
+                            {
+                                <tr>
+                                    <td>@r.TenantName</td>
+                                    <td>@r.PropertyTitle</td>
+                                    <td>@r.Location</td>
+                                    <td>@r.Contact</td>
+                                    <td>
+                                        <span class="badge GetScoreBadge(r.Score)">@r.Score</span>
+                                    </td>
+                                    <td>
+                                        <span class="badge GetStatusBadge(r.Status)">@r.Status</span>
+                                    </td>
+                                    <td class="text-end">
+                                        <button class="btn btn-sm btn-outline-primary me-1" data-bs-toggle="offcanvas" data-bs-target="#detailsDrawer" aria-controls="detailsDrawer" onclick="(() => Model.OpenDetails(r.Id))">View</button>
+
+                                        @if (r.Status == "Pending")
+                                        {
+                                            <button class="btn btn-sm btn-success me-1" data-bs-toggle="modal" data-bs-target="#approveModal" onclick="(() => Model.SetActionRequestId(r.Id))">Approve</button>
+                                            <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#rejectModal" onclick="(() => Model.SetActionRequestId(r.Id))">Reject</button>
+                                        }
+                                        else
+                                        {
+                                            <button class="btn btn-sm btn-secondary" disabled>Processed</button>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Properties Tab -->
+        <div class="tab-pane fade" id="properties" role="tabpanel">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="mb-0">Your Properties</h5>
+                <a asp-page="/Owner/AddProperty" class="btn btn-primary btn-sm">+ List New Property</a>
+            </div>
+
+            <div class="row g-3">
+                @foreach (var p in Model.Properties)
+                {
+                    <div class="col-md-4">
+                        <div class="card property-card">
+                            <img src="@p.ImageUrl" class="card-img-top" alt="@p.Title" style="height:180px; object-fit:cover" />
+                            <div class="card-body">
+                                <h6 class="card-title">@p.Title</h6>
+                                <p class="text-muted small mb-2">@p.Location • @p.Price / month</p>
+                                <div class="d-flex justify-content-between">
+                                    <a asp-page="/Owner/EditProperty" asp-route-id="@p.Id" class="btn btn-outline-primary btn-sm">Edit</a>
+                                    <a href="#" class="btn btn-light btn-sm">Requests (@p.RequestCount)</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Approve Modal -->
+<div class="modal fade" id="approveModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-3">
+      <div class="modal-header">
+        <h5 class="modal-title">Approve Request</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to approve this request?</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn btn-success" onclick="Model.ConfirmApprove">Approve</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Reject Modal -->
+<div class="modal fade" id="rejectModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-3">
+      <div class="modal-header">
+        <h5 class="modal-title">Reject Request</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <label class="form-label">Reason (optional)</label>
+        <textarea class="form-control" rows="3" bind="Model.RejectReason"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn btn-danger" onclick="Model.ConfirmReject">Reject</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Details Offcanvas Drawer -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="detailsDrawer" aria-labelledby="detailsDrawerLabel">
+  <div class="offcanvas-header">
+    <h5 id="detailsDrawerLabel">Request Details</h5>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
+  </div>
+  <div class="offcanvas-body">
+      @if (Model.ActiveRequest != null)
+      {
+          <div>
+              <h5>@Model.ActiveRequest.TenantName</h5>
+              <p class="text-muted">@Model.ActiveRequest.Contact • @Model.ActiveRequest.Location</p>
+              <hr />
+              <h6>Message</h6>
+              <p>@Model.ActiveRequest.Message</p>
+              <hr />
+              <h6>Property</h6>
+              <p>@Model.ActiveRequest.PropertyTitle</p>
+              <div class="mt-3">
+                  <button class="btn btn-success me-2" data-bs-dismiss="offcanvas" data-bs-toggle="modal" data-bs-target="#approveModal" onclick="(() => Model.SetActionRequestId(Model.ActiveRequest.Id))">Approve</button>
+                  <button class="btn btn-outline-danger" data-bs-dismiss="offcanvas" data-bs-toggle="modal" data-bs-target="#rejectModal" onclick="(() => Model.SetActionRequestId(Model.ActiveRequest.Id))">Reject</button>
+              </div>
+          </div>
+      }
+      else
+      {
+          <div class="text-muted">Select a request to see details</div>
+      }
+  </div>
+</div>
+
+@section Scripts {
+    <script>
+        // small helper: auto open offcanvas when details set (optional)
+    </script>
+}
+
