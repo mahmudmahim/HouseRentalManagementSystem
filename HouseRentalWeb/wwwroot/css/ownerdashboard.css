@@ -63,6 +63,12 @@
     padding: .35rem .6rem;
 }
 
+
+input[type="range"]::-webkit-slider-thumb {
+    background: #6366f1;
+}
+
+
 /* Small responsive fix */
 @media (max-width: 992px) {
     .sidebar {

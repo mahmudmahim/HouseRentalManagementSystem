@@ -32,14 +32,12 @@ namespace HouseRentalWeb.Pages.Dashboard
             RejectedRequests = 4;
             PendingDelta = 8;
 
-            // sample properties (use user-uploaded image path as placeholder)
-            var img = "/mnt/data/3000-8a048c0e-c1ee-420f-af93-bf3cde91baa7.orchids.page_.png";
 
             Properties = new List<PropertyItem>
         {
-            new PropertyItem { Id = 1, Title="2BHK in Gulshan", Location="Gulshan, Dhaka", Price="35,000", RequestCount=3, ImageUrl=img },
-            new PropertyItem { Id = 2, Title="Apartment in Banani", Location="Banani, Dhaka", Price="28,000", RequestCount=5, ImageUrl=img },
-            new PropertyItem { Id = 3, Title="Studio Dhanmondi", Location="Dhanmondi, Dhaka", Price="22,000", RequestCount=0, ImageUrl=img }
+            new PropertyItem { Id = 1, Title="2BHK in Gulshan", Location="Gulshan, Dhaka", Price="35,000", RequestCount=3, ImageUrl="/images/home01.jpg" },
+            new PropertyItem { Id = 2, Title="Apartment in Banani", Location="Banani, Dhaka", Price="28,000", RequestCount=5, ImageUrl="/images/home02.jpeg" },
+            new PropertyItem { Id = 3, Title="Studio Dhanmondi", Location="Dhanmondi, Dhaka", Price="22,000", RequestCount=0, ImageUrl="/images/home03.jpg" }
         };
 
             // sample requests

@@ -26,11 +26,11 @@
         <div class="container">
             <a class="navbar-brand fw-bold fs-4 gradient-text" href="/">🏠 UrbanNest</a>
 
-            <div class="d-flex ms-auto px-4 pe-4">
+            <div class="d-flex ms-auto" style="margin-right:-70px !important;">
                 @if (isDashboard)
                 {
-                    <a asp-page="/Auth/Logout" class="btn signup-btn me-2">Logout</a>
-                    <a asp-page="/Property/List" class="btn signup-btn">List Property</a>
+                    <a asp-page="/Property/List" class="btn signup-btn me-2">List Property</a>
+                    <a asp-page="/Auth/Logout" class="btn signup-btn">Logout</a>
                 }
                 else
                 {
