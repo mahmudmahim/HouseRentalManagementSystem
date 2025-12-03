@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "API\\HouseRentalAPI.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "HouseRentalWeb\\HouseRentalWeb.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

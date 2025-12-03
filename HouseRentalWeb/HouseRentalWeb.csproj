@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AjaxMin" Version="5.14.5506.26202" />
     <PackageReference Include="FontAwesome" Version="4.7.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.3.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.21">
@@ -17,10 +18,13 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.jQuery.Unobtrusive.Ajax" Version="3.2.6" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\API\HouseRentalAPI.csproj" />
     <ProjectReference Include="..\Application\HouseRentalApplication.csproj" />
+    <ProjectReference Include="..\Domain\HouseRentalDomain.csproj" />
     <ProjectReference Include="..\Infrastructure\HouseRentalInfrastructure.csproj" />
   </ItemGroup>
 

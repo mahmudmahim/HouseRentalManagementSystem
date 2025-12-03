@@ -1,7 +1,10 @@
 ﻿@page
 @model HouseRentalWeb.Pages.Auth.SignUpModel
+@using System.Data
+@using HouseRentalAPI;
 @{
     Layout = "_Layout";
+    string url_basic = Url.Content("~/");
 }
 
 <!-- Header Strip -->
@@ -30,37 +33,37 @@
 
         <div class="row g-2">
             <div class="col-md-6">
-                <input type="text" class="form-control" placeholder="First Name" required />
+                <input type="text" class="form-control" id="fname" placeholder="First Name" required />
             </div>
 
             <div class="col-md-6">
-                <input type="text" class="form-control" placeholder="Last Name" required />
+                <input type="text" class="form-control" id="lname" placeholder="Last Name" required />
             </div>
 
             <div class="col-md-6">
-                <input type="number" class="form-control" placeholder="Phone" required />
+                <input type="number" class="form-control" id="phone" placeholder="Phone" required />
             </div>
 
             <div class="col-md-6">
-                <input type="email" class="form-control" placeholder="Email" required />
+                <input type="email" class="form-control" id="email" placeholder="Email" required />
             </div>
 
             <div class="col-md-6">
-                <input type="text" class="form-control" placeholder="Address" required />
+                <input type="text" class="form-control" id="address" placeholder="Address" required />
             </div>
             <div class="col-md-6">
-                <input type="text" class="form-control" placeholder="NID No" required />
+                <input type="text" class="form-control" id="nidNo" placeholder="NID No" required />
             </div>
 
             <div class="col-md-6">
-                <input type="password" class="form-control" placeholder="Password" required />
+                <input type="password" class="form-control" id="passWord" placeholder="Password" required />
             </div>
             <div class="col-md-6">
-                <input type="password" class="form-control" placeholder="Confirm Password" required />
+                <input type="password" class="form-control" id="cpassWord" placeholder="Confirm Password" required />
             </div>
         </div>
 
-        <button type="submit" class="btn btn-gradient mt-3">Create Account</button>
+        <button type="submit" id="btnSignup" class="btn btn-gradient mt-3">Create Account</button>
     </form>
 
     <div class="auth-footer text-center mt-3">
@@ -69,14 +72,9 @@
 </div>
 
 @section Scripts {
-    <script>
-        function selectRole(role) {
-            document.getElementById('UserRole').value = role;
-
-            document.getElementById('tenantRole').classList.remove('active');
-            document.getElementById('ownerRole').classList.remove('active');
-
-            document.getElementById(role + 'Role').classList.add('active');
-        }
+    <script src="/js/auth/AuthService.js"></script>
+    <script asp-append-version="true">
+        let basicurl="@url_basic";
     </script>
+
 }
