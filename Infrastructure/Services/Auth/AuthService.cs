@@ -2,6 +2,7 @@
 using HouseRentalApplication.Common.Interfaces.Auth;
 using HouseRentalDomain.Entities.Auth;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -89,6 +90,7 @@ namespace HouseRentalInfrastructure.Services.Auth
                     return new AuthResponseDTO { Success = false, Message = "Invalid credentials" };
                 }
 
+                var isOwer = user.IsOwner;
                 // JWT generation
                 var token = GenerateJwtToken(user);
 
@@ -108,6 +110,34 @@ namespace HouseRentalInfrastructure.Services.Auth
                 };
             }
         }
+            
+        public async Task<AuthResponseDTO> GetUser(LoginDTO model)
+        {
+            try
+            {
+                var user = await _userManager.FindByEmailAsync(model.Email);
+
+                if (user == null || !await _userManager.CheckPasswordAsync(user, model.Password))
+                {
+                    return new AuthResponseDTO { Success = false, Message = "Invalid credentials" };
+                }
+
+                return new AuthResponseDTO
+                {
+                    Success = true,
+                    Message = "Login successful"
+                };
+            }
+            catch (Exception ex)
+            {
+                return new AuthResponseDTO
+                {
+                    Success = false,
+                    Message = ex.Message
+                };
+            }
+        }
+
         public async Task<bool> AssignRoleAsync(string userId, string role)
         {
             var user = await _userManager.FindByIdAsync(userId);
