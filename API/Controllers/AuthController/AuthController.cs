@@ -22,6 +22,12 @@ namespace HouseRentalAPI.Controllers.AuthController
             return Ok(await _authService.RegisterAsync(dto));
         }
 
+        [HttpPost("check-unique")]
+        public async Task<IActionResult> CheckUnique(UniqueCheckRequestDTO dto)
+        {
+            return Ok(await _authService.CheckUniqueFieldsAsync(dto));
+        }
+
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDTO dto)
         {

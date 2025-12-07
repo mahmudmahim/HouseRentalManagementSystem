@@ -11,6 +11,8 @@ namespace HouseRentalApplication.Common.Interfaces.Auth
     {
         Task<AuthResponseDTO> RegisterAsync(RegisterDTO model);
         Task<AuthResponseDTO> LoginAsync(LoginDTO model);
+        Task<UniqueCheckResponseDTO> CheckUniqueFieldsAsync(UniqueCheckRequestDTO dto);
+
         Task<bool> AssignRoleAsync(string userId, string role);
     }
 }
