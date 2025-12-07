@@ -6,24 +6,34 @@ function selectRole(role) {
      document.getElementById('ownerRole').classList.remove('active');
 
      document.getElementById(role + 'Role').classList.add('active');
- }
+}
+
+$("#phone").keyup(function () {
+    let phone = $(this).val();
+
+    console.log(phone);
+
+    if (phone.length > 11) {
+        $("#phone").val(phone.substring(0, phone.length - 1))
+        alert("Mobile Number must be 11 digit");
+        return false;
+    }
+
+});
+
+
 
 $("#btnSignup").click(function (e) {
     e.preventDefault(); // Prevent default form submit
 
     let password = $("#passWord").val();
     let confirmPassword = $("#cpassWord").val();
-    let phone = $("#phone").val();
 
     if (password !== confirmPassword) {
         alert("Password didn't match. Try again!");
         return;
     }
-    if (phone.length > 11) {
-        $("#phone").val(phone.substring(0, phone.length - 1))
-        alert("Mobile Number must be 11 digit");
-        return false;
-    }
+
 
     let isOwner = $("#UserRole").val() === "owner";
     let isAdmin = false;
@@ -48,7 +58,7 @@ $("#btnSignup").click(function (e) {
         data: JSON.stringify(request),
 
         success: function (res) {
-            if (res.success) {
+            if (res) {
                 toastr.success("Account created successfully!");
 
                 setTimeout(() => {
@@ -64,24 +74,62 @@ $("#btnSignup").click(function (e) {
             console.log(err);
         }
     });
+}); 
+//$("#email").blur(function () {
+//    checkUnique("email", $(this).val());
+//});
+
+$("#phone").blur(function () {
+    checkUnique("phone", $(this).val());
 });
+
+$("#nidNo").blur(function () {
+    checkUnique("nidNo", $(this).val());
+    
+});
+
+$("#email").on("blur", function () {
+    checkUnique("email", $(this).val());
+    
+});
+
+function checkUnique(field, value) {
+
+    const request = {};
+    request[field] = value; // dynamic object creation
+
+    $.ajax({
+        url: "https://localhost:7152/api/Auth/check-unique",
+        method: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(request),
+        success: function (res) {
+
+            if (field === "email" && res.emailExists) {
+                toastr.error("Email already exists!");
+                $('#email').val('');
+            }
+            if (field === "phone" && res.phoneExists) {
+                toastr.error("Phone number already exists!");
+                $('#phone').val('');
+
+            }
+            if (field === "nidNo" && res.nidExists) {
+                toastr.error("NID already exists!");
+                $('#nidNo').val('');
+
+            }
+        }
+    });
+}
 
 
 $("#btnLogIn").click(function (e) {
-    e.preventDefault(); // Prevent default form submit
-
-
-    let email = $("#txtemail").val();
-    let password = $("#txtpass").val();
-
-
-
-    let isOwner = $("#UserRole").val() === "owner";
-    let isAdmin = false;
+    e.preventDefault();
 
     const request = {
-        email: email,
-        password: password
+        email: $("#txtemail").val(),
+        password: $("#txtpass").val()
     };
 
     $.ajax({
@@ -91,20 +139,33 @@ $("#btnLogIn").click(function (e) {
         data: JSON.stringify(request),
 
         success: function (res) {
-            if (res.success) {
-                toastr.success("Account created successfully!");
-
-                setTimeout(() => {
-                    window.location.href = "/Auth/Login";
-                }, 3000);
-            } else {
+            if (!res.success) {
                 toastr.error(res.message);
+                return;
             }
+
+            // save token
+            localStorage.setItem("token", res.token);
+            localStorage.setItem("role", res.role);
+
+            console.log(res.token);
+            console.log(res.role);
+
+            toastr.success("Login Successful!");
+
+            setTimeout(() => {
+                if (res.role === "Owner") {
+                    window.location.href = "/Dashboard/OwnerDashboard";
+                }
+                else {
+                    window.location.href = "/Dashboard/TenantDashboard";
+                }
+            }, 3000);
         },
 
-        error: function (err) {
-            toastr.error("Something went wrong. Check console.");
-            console.log(err);
+        error: function () {
+            toastr.error("Server error. Try again.");
         }
     });
 });
+

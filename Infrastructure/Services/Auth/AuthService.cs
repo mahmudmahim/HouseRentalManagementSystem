@@ -1,8 +1,10 @@
 ﻿using HouseRentalApplication.Common.DTOs.Auth;
 using HouseRentalApplication.Common.Interfaces.Auth;
 using HouseRentalDomain.Entities.Auth;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -11,6 +13,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
 namespace HouseRentalInfrastructure.Services.Auth
@@ -40,6 +43,7 @@ namespace HouseRentalInfrastructure.Services.Auth
                     Phone = model.Phone,
                     Address = model.Address,
                     NIDNo = model.NIDNo,
+                    NormalizedEmail=model.Email,
                     IsOwner = model.IsOwner,
                     IsAdmin = model.IsAdmin
                 };
@@ -83,14 +87,14 @@ namespace HouseRentalInfrastructure.Services.Auth
         {
             try
             {
-                var user = await _userManager.FindByEmailAsync(model.Email);
+                var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
 
                 if (user == null || !await _userManager.CheckPasswordAsync(user, model.Password))
                 {
                     return new AuthResponseDTO { Success = false, Message = "Invalid credentials" };
                 }
 
-                var isOwer = user.IsOwner;
+                string role = user.IsOwner == true ? "Owner" : "Tenant";
                 // JWT generation
                 var token = GenerateJwtToken(user);
 
@@ -98,6 +102,7 @@ namespace HouseRentalInfrastructure.Services.Auth
                 {
                     Success = true,
                     Token = token,
+                    Role = role,
                     Message = "Login successful"
                 };
             }
@@ -110,33 +115,38 @@ namespace HouseRentalInfrastructure.Services.Auth
                 };
             }
         }
-            
-        public async Task<AuthResponseDTO> GetUser(LoginDTO model)
+
+        public async Task<UniqueCheckResponseDTO> CheckUniqueFieldsAsync(UniqueCheckRequestDTO dto)
         {
-            try
-            {
-                var user = await _userManager.FindByEmailAsync(model.Email);
+            var response = new UniqueCheckResponseDTO();
 
-                if (user == null || !await _userManager.CheckPasswordAsync(user, model.Password))
-                {
-                    return new AuthResponseDTO { Success = false, Message = "Invalid credentials" };
-                }
-
-                return new AuthResponseDTO
-                {
-                    Success = true,
-                    Message = "Login successful"
-                };
-            }
-            catch (Exception ex)
+            if (!string.IsNullOrEmpty(dto.Email))
             {
-                return new AuthResponseDTO
-                {
-                    Success = false,
-                    Message = ex.Message
-                };
+                var emailUser = await _userManager.FindByEmailAsync(dto.Email);
+                response.EmailExists = emailUser != null;
             }
+
+            if (!string.IsNullOrEmpty(dto.Phone))
+            {
+                var phoneUser = await _userManager.Users
+                    .FirstOrDefaultAsync(u => u.Phone == dto.Phone);
+
+                response.PhoneExists = phoneUser != null;
+            }
+
+            if (!string.IsNullOrEmpty(dto.NidNo))
+            {
+                var nidUser = await _userManager.Users
+                    .FirstOrDefaultAsync(u => u.NIDNo == dto.NidNo);
+
+                response.NidExists = nidUser != null;
+            }
+
+            response.Message = "Validation completed";
+
+            return response;
         }
+
 
         public async Task<bool> AssignRoleAsync(string userId, string role)
         {
