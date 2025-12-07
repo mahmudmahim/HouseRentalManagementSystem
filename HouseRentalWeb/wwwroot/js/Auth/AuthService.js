@@ -6,7 +6,9 @@ function selectRole(role) {
      document.getElementById('ownerRole').classList.remove('active');
 
      document.getElementById(role + 'Role').classList.add('active');
- }
+}
+
+let isOwner;
 
 $("#btnSignup").click(function (e) {
     e.preventDefault(); // Prevent default form submit
@@ -19,7 +21,7 @@ $("#btnSignup").click(function (e) {
         return;
     }
 
-    let isOwner = $("#UserRole").val() === "owner";
+    isOwner = $("#UserRole").val() === "owner";
     let isAdmin = false;
 
     const request = {
@@ -42,11 +44,54 @@ $("#btnSignup").click(function (e) {
         data: JSON.stringify(request),
 
         success: function (res) {
-            if (res.success) {
+            if (res) {
                 toastr.success("Account created successfully!");
 
                 setTimeout(() => {
                     window.location.href = "/Auth/Login";
+                }, 3000);
+            } else {
+                toastr.error(res.message);
+            }
+        },
+
+        error: function (err) {
+            toastr.error("Something went wrong. Check console.");
+            console.log(err);
+        }
+    });
+}); 
+
+$("#btnLogIn").click(function (e) {
+    e.preventDefault(); // Prevent default form submit
+
+
+    let email = $("#txtemail").val();
+    let password = $("#txtpass").val();
+
+      isOwner = $("#UserRole").val(); 
+
+    const request = {
+        email: email,
+        password: password
+    };
+
+    $.ajax({
+        url: "https://localhost:7152/api/Auth/login",
+        method: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(request),
+
+        success: function (res) {
+            if (res) {
+                toastr.success("Login successfully!");
+
+                setTimeout(() => {
+                    if (isOwner) {
+                        window.location.href = "/Dashboard/OwnerDashboard";
+                    } else {
+                        window.location.href = "/Dashboard/TenantDashboard";
+                    }
                 }, 3000);
             } else {
                 toastr.error(res.message);

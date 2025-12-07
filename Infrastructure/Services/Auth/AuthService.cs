@@ -39,6 +39,7 @@ namespace HouseRentalInfrastructure.Services.Auth
                     Phone = model.Phone,
                     Address = model.Address,
                     NIDNo = model.NIDNo,
+                    NormalizedEmail=model.Email,
                     IsOwner = model.IsOwner,
                     IsAdmin = model.IsAdmin
                 };
