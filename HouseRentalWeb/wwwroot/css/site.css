@@ -1,4 +1,132 @@
 /* ======= Global Body & Typography ======= */
+/* Minimal polished styling — adapt to your design system or Tailwind */
+.create-wrapper {
+    max-width: 1100px;
+    margin: 24px auto;
+    padding: 24px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,.06);
+}
+
+.stepper {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.step {
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+    background: #f3f6fb;
+    color: #333;
+    font-weight: 600;
+}
+
+    .step.active {
+        background: #0b66ff;
+        color: #fff;
+    }
+
+.step-page {
+    display: none;
+}
+
+    .step-page.active {
+        display: block;
+    }
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.form-row {
+    margin-bottom: 12px;
+}
+
+.field {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #d9e1ef;
+}
+
+.btn {
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: 0;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background: #0b66ff;
+    color: #fff;
+}
+
+.btn-ghost {
+    background: #fff;
+    border: 1px solid #d9e1ef;
+    color: #333;
+}
+
+.dropzone {
+    border: 2px dashed #d9e1ef;
+    padding: 16px;
+    border-radius: 8px;
+    text-align: center;
+    min-height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.thumb-list {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+}
+
+.thumb {
+    width: 120px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0,0,0,.08);
+    position: relative;
+}
+
+    .thumb .remove {
+        position: absolute;
+        right: 6px;
+        top: 6px;
+        background: rgba(0,0,0,.5);
+        color: #fff;
+        padding: 3px 6px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+.specs-grid {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.error {
+    color: #c0392b;
+    font-size: 13px;
+    margin-top: 6px;
+}
+
+
+
+
+
 body {
     background: linear-gradient(to bottom right, #e6f1f9, #ffffff);
     font-family: 'Segoe UI', sans-serif;

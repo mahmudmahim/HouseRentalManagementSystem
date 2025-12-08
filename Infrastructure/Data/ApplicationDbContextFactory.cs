@@ -15,7 +15,7 @@ namespace HouseRentalInfrastructure.Data
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
 
             optionsBuilder.UseSqlServer(
-                "Server=MahmudMahim;Database=HouseRentalManagementDB;Trusted_Connection=True;TrustServerCertificate=True");
+                "Server=N-PC\\SQLENTERPRISE;Database=HouseRentalManagementDB;Trusted_Connection=True;TrustServerCertificate=True");
 
             return new ApplicationDbContext(optionsBuilder.Options);
         }
