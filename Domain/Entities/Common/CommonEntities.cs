@@ -50,6 +50,11 @@ namespace HouseRentalDomain.Entities.Common
             public int SortOrder { get; set; }
         }
 
+        public class ImageSaveResult
+        {
+            public string Url { get; set; } = "";
+            public string Id { get; set; } = "";
+        }
         public class RentalRequest
         {
             public int Id { get; set; }
