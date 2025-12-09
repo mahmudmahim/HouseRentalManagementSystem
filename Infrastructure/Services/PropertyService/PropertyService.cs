@@ -1,5 +1,9 @@
-﻿using HouseRentalApplication.Common.Interfaces.Properties;
+﻿using HouseRentalApplication.Common.DTOs.Auth;
+using HouseRentalApplication.Common.Interfaces.Properties;
 using HouseRentalInfrastructure.Data;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -24,51 +28,59 @@ namespace HouseRentalInfrastructure.Services.PropertyService
 
         public async Task<Property> CreateAsync(PropertyCreateDto dto)
         {
-            // business rules
-            if (dto.Price <= 0)
-                throw new ArgumentException("Price must be greater than zero");
-
-            if (string.IsNullOrWhiteSpace(dto.Title))
-                throw new ArgumentException("Title is required");
-
-            var p = new Property
+            try
             {
-                Title = dto.Title,
-                Description = dto.Description ?? string.Empty,
-                Price = dto.Price,
-                Sqft = dto.Sqft,
-                BedRooms = dto.Bedrooms,
-                Balcony = dto.Balcony,
-                Washroom = dto.Washroom,
-                Address = dto.Address,
-                Area = dto.Area,
-                District = dto.District,
-                OwnerId = dto.OwnerId,
-                Status = Enum.TryParse<PropertyStatus>(dto.Status, out var s)
-                    ? s : PropertyStatus.Draft,
-                CreatedDate = DateTime.UtcNow
-            };
+                // business rules
+                if (dto.Price <= 0)
+                    throw new ArgumentException("Price must be greater than zero");
 
-            _db.Properties.Add(p);
-            await _db.SaveChangesAsync();
+                if (string.IsNullOrWhiteSpace(dto.Title))
+                    throw new ArgumentException("Title is required");
 
-            if (dto.Images != null)
-            {
-                int order = 0;
-                foreach (var i in dto.Images.OrderBy(x => x.SortOrder))
+                var p = new Property
                 {
-                    _db.PropertyImages.Add(new PropertyImage
+                    Title = dto.Title,
+                    Description = dto.Description ?? string.Empty,
+                    Price = dto.Price,
+                    Sqft = dto.Sqft,
+                    BedRooms = dto.Bedrooms,
+                    Balcony = dto.Balcony,
+                    Washroom = dto.Washroom,
+                    Address = dto.Address,
+                    Area = dto.Area,
+                    District = dto.District,
+                    OwnerId = dto.OwnerId,
+                    Status = Enum.TryParse<PropertyStatus>(dto.Status, out var s)
+                        ? s : PropertyStatus.Draft,
+                    CreatedDate = DateTime.UtcNow
+                };
+
+                _db.Properties.Add(p);
+                await _db.SaveChangesAsync();
+
+                if (dto.Images != null)
+                {
+                    int order = 0;
+                    foreach (var i in dto.Images.OrderBy(x => x.SortOrder))
                     {
-                        PropertyId = p.PropertyId,
-                        Url = i.Url,
-                        SortOrder = order++
-                    });
+                        _db.PropertyImages.Add(new PropertyImage
+                        {
+                            PropertyId = p.PropertyId,
+                            Url = i.Url,
+                            SortOrder = order++
+                        });
+                    }
+
+                    await _db.SaveChangesAsync();
                 }
 
-                await _db.SaveChangesAsync();
+                return p;
             }
-
-            return p;
+            catch(Exception ex)
+            {
+                throw new ArgumentException(ex.Message);
+            }
+           
         }
 
         public async Task<Property?> GetByIdAsync(int id)

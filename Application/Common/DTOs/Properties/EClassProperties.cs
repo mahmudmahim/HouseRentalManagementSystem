@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -25,7 +26,7 @@ namespace HouseRentalApplication.Common.DTOs.Properties
             public string? Area { get; set; }
             [Required] 
             public string District { get; set; } = string.Empty;
-            public string OwnerId { get; set; } = string.Empty;
+            public string OwnerId { get; set; }
             public string Status { get; set; } = "Draft";
             public List<PropertyImageDto>? Images { get; set; }
         }
@@ -35,6 +36,11 @@ namespace HouseRentalApplication.Common.DTOs.Properties
             [Required] 
             public string Url { get; set; } = string.Empty;
             public int SortOrder { get; set; }
+        }
+
+        public class FileUploadDto
+        {
+            public IFormFile File { get; set; }
         }
     }
 }
