@@ -2,6 +2,7 @@
 @model HouseRentalWeb.Pages.Properties.CreatePropertiesModel
 @{
 	ViewData["Title"] = "List New Property";
+    string OwnerId = User?.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? "";
 }
 
 
@@ -17,7 +18,7 @@
     </div>
 
     <form id="propertyCreateForm" enctype="multipart/form-data">
-        <input type="hidden" id="ownerId" value="@Model.OwnerId" />
+        <input type="hidden" id="ownerId" value="@OwnerId" />
 
         <!-- Step 1: Basic -->
         <div id="step-1" class="step-page active">

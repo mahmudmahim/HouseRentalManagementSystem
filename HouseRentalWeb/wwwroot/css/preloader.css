@@ -1,0 +1,64 @@
+﻿/* Preloader Container */
+#preloader {
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999999 !important;
+    flex-direction: column;
+    transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+}
+
+/* Wrapper for Loader */
+.loader-wrapper {
+    text-align: center;
+}
+
+/* Loading Text */
+.loading-text {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Circle Progress Container */
+.circle-progress-container {
+    position: relative;
+    width: 120px;
+    height: 120px;
+}
+
+/* Background Circle */
+.circle-background {
+    fill: none;
+    stroke: #ddd;
+    stroke-width: 10;
+}
+
+/* Progress Circle */
+.circle-progress-bar {
+    fill: none;
+    stroke: #3498db;
+    stroke-width: 10;
+    stroke-linecap: round;
+    stroke-dasharray: 339.292; /* Circumference of the circle (2 * π * 54) */
+    stroke-dashoffset: 339.292; /* Starts as 100% */
+    transition: stroke-dashoffset 0.5s ease-out;
+}
+
+/* Percentage Text in the Middle */
+.circle-text {
+    font-size: 24px;
+    font-weight: bold;
+    fill: black;
+}
+
+/* Fade Out Preloader */
+.hidden {
+    opacity: 0;
+    visibility: hidden;
+}

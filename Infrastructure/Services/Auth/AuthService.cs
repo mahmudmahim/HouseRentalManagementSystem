@@ -166,6 +166,7 @@ namespace HouseRentalInfrastructure.Services.Auth
         {
             new Claim(JwtRegisteredClaimNames.Sub, user.Id),
             new Claim(ClaimTypes.Name, user.UserName ?? ""),
+            new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString() ?? ""),
             new Claim("isOwner", user.IsOwner.ToString()),
             new Claim("UserName", user.UserName ?? string.Empty),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())

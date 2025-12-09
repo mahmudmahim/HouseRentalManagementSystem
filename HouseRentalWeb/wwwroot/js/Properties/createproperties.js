@@ -3,7 +3,7 @@ $(function () {
     const steps = [1, 2, 3, 4, 5];
     let current = 1;
     const uploadedImages = []; // {url, id, file, isCover, sortOrder}
-    const apiBase = "/api/properties";
+    const apiBase = "https://localhost:7152/api/Properties";
 
     // stepper UI
     function setStep(n) {
@@ -106,9 +106,18 @@ $(function () {
                 contentType: false,
                 success: function (resp) {
                     placeholder.remove();
-                    const item = { url: resp.url, id: resp.id || resp.url, sortOrder: uploadedImages.length };
+                    const absoluteUrl = apiBase.replace("/api/Properties", "") + resp.url;
+
+                    const item = {
+                        url: absoluteUrl,
+                        id: resp.id || absoluteUrl,
+                        sortOrder: uploadedImages.length
+                    };
+
+                    //const item = { url: resp.url, id: resp.id || resp.url, sortOrder: uploadedImages.length };
                     uploadedImages.push(item);
                     renderThumbs();
+                    renderReview();
                 },
                 error: function (xhr) {
                     placeholder.remove();
@@ -175,11 +184,11 @@ $(function () {
     function submitProperty(targetStatus) {
         // Validate all steps
         if (!validateStep(1) || !validateStep(2) || !validateStep(3)) {
-            showToast("Please fix validation errors");
+            toastr.error("Please fix validation errors");
             return;
         }
         if (uploadedImages.length === 0) {
-            showToast("Upload at least one image");
+            toastr.error("Upload at least one image");
             return;
         }
 
@@ -203,17 +212,17 @@ $(function () {
         $("#btnPublish, #btnSaveDraft, #btnNext, #btnPrev").prop("disabled", true);
 
         $.ajax({
-            url: apiBase,
+            url: apiBase + "/createproperty",
             method: "POST",
             contentType: "application/json",
             data: JSON.stringify(payload),
             success: function (resp) {
-                showToast("Property created");
+                toastr.success("Property created");
                 // redirect to Owner properties list
-                setTimeout(() => { window.location.href = "/Owner/Properties"; }, 700);
+                setTimeout(() => { window.location.href = "/Dashboard/OwnerDashboard"; }, 1200);
             },
             error: function (xhr) {
-                showToast("Failed to create property");
+                toastr.error("Failed to create property");
                 $("#btnPublish, #btnSaveDraft, #btnNext, #btnPrev").prop("disabled", false);
             }
         });
