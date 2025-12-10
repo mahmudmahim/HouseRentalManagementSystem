@@ -85,8 +85,9 @@ namespace HouseRentalInfrastructure.Services.PropertyService
 
         public async Task<Property?> GetByIdAsync(int id)
         {
-            return await _db.Properties.Include(x => x.Images)
+            var getProperty = await _db.Properties.Include(x => x.Images)
                                        .FirstOrDefaultAsync(x => x.PropertyId == id);
+            return getProperty;
         }
     }
 }

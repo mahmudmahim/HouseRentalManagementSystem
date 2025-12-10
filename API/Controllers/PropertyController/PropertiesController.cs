@@ -41,7 +41,7 @@ namespace HouseRentalAPI.Controllers.PropertyController
             try
             {
                 var p = await _service.CreateAsync(dto);
-                return CreatedAtAction(nameof(GetById), new { id = p.PropertyId }, p);
+                return Ok(dto);
             }
             catch (ArgumentException ex)
             {
@@ -53,7 +53,32 @@ namespace HouseRentalAPI.Controllers.PropertyController
         public async Task<IActionResult> GetById(int id)
         {
             var p = await _service.GetByIdAsync(id);
-            return p == null ? NotFound() : Ok(p);
+
+            if (p == null)
+                return NotFound();
+
+            var dto = new PropertyCreateDto
+            {
+                PropertyId = p.PropertyId,
+                Title = p.Title,
+                Description = p.Description,
+                Bedrooms = p.BedRooms,
+                Balcony = p.Balcony,
+                Washroom = p.Washroom,
+                Area = p.Area,
+                Address = p.Address,
+                District = p.District,
+                OwnerId = p.OwnerId,
+                Price = p.Price,
+                Sqft = p.Sqft,
+                Images = p.Images.Select(img => new PropertyImageDto
+                {
+                    SortOrder = img.SortOrder,
+                    Url = img.Url
+                }).ToList()
+            };
+
+            return Ok(dto);
         }
     }
 }
