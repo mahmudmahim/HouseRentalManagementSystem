@@ -44,6 +44,7 @@ namespace HouseRentalInfrastructure.Services.Auth
                     Address = model.Address,
                     NIDNo = model.NIDNo,
                     NormalizedEmail=model.Email,
+                    NormalizedUserName = model.Email,
                     IsOwner = model.IsOwner,
                     IsAdmin = model.IsAdmin
                 };
@@ -166,7 +167,7 @@ namespace HouseRentalInfrastructure.Services.Auth
         {
             new Claim(JwtRegisteredClaimNames.Sub, user.Id),
             new Claim(ClaimTypes.Name, user.UserName ?? ""),
-            new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString() ?? ""),
+            new Claim("UserID", user.UserID.ToString() ?? ""),
             new Claim("isOwner", user.IsOwner.ToString()),
             new Claim("UserName", user.UserName ?? string.Empty),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())

@@ -12,6 +12,7 @@ namespace HouseRentalApplication.Common.DTOs.Properties
     {
         public class PropertyCreateDto
         {
+            public int PropertyId { get; set; }
             [Required] 
             public string Title { get; set; } = string.Empty;
             public string? Description { get; set; }

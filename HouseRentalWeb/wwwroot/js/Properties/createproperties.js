@@ -181,6 +181,25 @@ $(function () {
     }
 
     // Final payload and create
+
+    function getUserIdFromToken() {
+        const token = localStorage.getItem("token");
+        if (!token) return "";
+
+        try {
+            const payload = JSON.parse(atob(token.split(".")[1]));
+            return payload["UserID"] || "";
+        } catch {
+            return "";
+        }
+    }
+
+    let ownerIDFromToken = getUserIdFromToken();
+
+    $(document).ready(function () {
+        console.log(ownerIDFromToken);
+    })
+
     function submitProperty(targetStatus) {
         // Validate all steps
         if (!validateStep(1) || !validateStep(2) || !validateStep(3)) {
@@ -203,7 +222,7 @@ $(function () {
             address: $("#address").val(),
             area: $("#area").val(),
             district: $("#district").val(),
-            ownerId: $("#ownerId").val(),
+            ownerId: getUserIdFromToken(),
             status: targetStatus || $("#status").val(),
             images: uploadedImages.map((x, i) => ({ url: x.url, sortOrder: i }))
         };
@@ -217,11 +236,15 @@ $(function () {
             contentType: "application/json",
             data: JSON.stringify(payload),
             success: function (resp) {
+                if (!resp) {
+                    toastr.error("Failed to create property");
+                    return;
+                }
                 toastr.success("Property created");
                 // redirect to Owner properties list
                 setTimeout(() => { window.location.href = "/Dashboard/OwnerDashboard"; }, 1200);
             },
-            error: function (xhr) {
+            error: function () {
                 toastr.error("Failed to create property");
                 $("#btnPublish, #btnSaveDraft, #btnNext, #btnPrev").prop("disabled", false);
             }
