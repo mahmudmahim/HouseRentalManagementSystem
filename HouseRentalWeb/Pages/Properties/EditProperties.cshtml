@@ -1,0 +1,139 @@
+﻿@page "{id:int}"
+@model HouseRentalWeb.Pages.Properties.EditPropertiesModel
+@{
+    ViewData["Title"] = "Edit Property";
+    string OwnerId = User?.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? "";
+}
+
+<div class="create-wrapper">
+    <h2>Edit Property</h2>
+
+    <div class="stepper" id="stepper">
+        <div class="step active" data-step="1">Basic</div>
+        <div class="step" data-step="2">Details</div>
+        <div class="step" data-step="3">Location</div>
+        <div class="step" data-step="4">Images</div>
+        <div class="step" data-step="5">Review</div>
+    </div>
+
+    <form id="propertyEditForm" enctype="multipart/form-data">
+        <input type="hidden" id="ownerId" value="@OwnerId" />
+        @* <input type="hidden" id="propertyId" value="@Model.PropertyId" /> *@
+
+        <!-- Step 1: Basic -->
+        <div id="step-1" class="step-page active">
+            <div class="form-row">
+                <label>Title *</label>
+                <input id="title" class="field" />
+                <div class="error" id="err-title"></div>
+            </div>
+            <div class="form-row">
+                <label>Description</label>
+                <textarea id="description" class="field" rows="4"></textarea>
+            </div>
+        </div>
+
+        <!-- Step 2: Details -->
+        <div id="step-2" class="step-page">
+            <div class="form-grid">
+                <div class="form-row">
+                    <label>Price (monthly) *</label>
+                    <input id="price" type="number" class="field" />
+                    <div class="error" id="err-price"></div>
+                </div>
+
+                <div class="form-row">
+                    <label>Sqft *</label>
+                    <input id="sqft" type="number" class="field" />
+                    <div class="error" id="err-sqft"></div>
+                </div>
+
+                <div class="form-row">
+                    <label>Bedrooms *</label>
+                    <input id="bedrooms" type="number" class="field" />
+                    <div class="error" id="err-bedrooms"></div>
+                </div>
+
+                <div class="form-row">
+                    <label>Washrooms</label>
+                    <input id="washroom" type="number" class="field" />
+                </div>
+
+                <div class="form-row">
+                    <label>Balcony</label>
+                    <input id="balcony" type="number" class="field" />
+                </div>
+
+                <div class="form-row">
+                    <label>Status</label>
+                    <select id="status" class="field">
+                        <option value="Published">Published</option>
+                        <option value="Draft">Draft</option>
+                        <option value="Paused">Paused</option>
+                        <option value="Archived">Archived</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 3: Location -->
+        <div id="step-3" class="step-page">
+            <div class="form-row">
+                <label>Address *</label>
+                <input id="address" class="field" />
+                <div class="error" id="err-address"></div>
+            </div>
+
+            <div class="form-grid">
+                <div class="form-row">
+                    <label>Area</label>
+                    <input id="area" class="field" />
+                </div>
+                <div class="form-row">
+                    <label>District *</label>
+                    <input id="district" class="field" />
+                    <div class="error" id="err-district"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 4: Images -->
+        <div id="step-4" class="step-page">
+            <label>Images</label>
+
+            <div class="thumb-list" id="thumbList"></div>
+
+            <div id="dropzone" class="dropzone">
+                <div>
+                    <i class="fa fa-cloud-upload-alt" style="font-size:28px;"></i>
+                    <div>Drop images here or <button type="button" id="btnSelectFiles" class="btn btn-ghost">Select</button></div>
+                    <input type="file" id="fileInput" accept="image/*" multiple style="display:none;" />
+                </div>
+            </div>
+
+            <div class="error" id="err-images"></div>
+        </div>
+
+        <!-- Step 5: Review -->
+        <div id="step-5" class="step-page">
+            <h3>Review</h3>
+            <div id="reviewCard" style="padding:12px; border-radius:8px; border:1px solid #eee;"></div>
+
+            <div style="margin-top:12px;">
+                <label><input type="checkbox" id="setAsFeatured" /> Set first image as cover</label>
+            </div>
+        </div>
+
+        <div style="margin-top:18px; display:flex; gap:8px; justify-content:flex-end;">
+            <button type="button" id="btnPrev" class="btn btn-ghost">Previous</button>
+            <button type="button" id="btnNext" class="btn btn-primary">Next</button>
+            <button type="button" id="btnBack" class="btn btn-primary">Back to Dashboard</button>
+
+            <button type="button" id="btnUpdate" class="btn btn-primary" style="display:none;">Update Property</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="~/js/properties/editproperties.js"></script>
+}

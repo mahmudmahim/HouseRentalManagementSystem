@@ -83,11 +83,56 @@ namespace HouseRentalInfrastructure.Services.PropertyService
            
         }
 
-        public async Task<Property?> GetByIdAsync(int id)
+        public async Task<Property?> GetPropertyById(int id)
         {
             var getProperty = await _db.Properties.Include(x => x.Images)
                                        .FirstOrDefaultAsync(x => x.PropertyId == id);
             return getProperty;
+        }
+
+        public async Task<List<PropertyListDto>> GetPropertiesByOwner(string ownerId)
+        {
+            var properties = await _db.Properties.Where(p => p.OwnerId == ownerId).Include(x => x.Images).Select(i => new PropertyListDto
+            {
+                PropertyId = i.PropertyId,
+                Title = i.Title,
+                Price = i.Price,
+                Sqft = i.Sqft,
+                District = i.District ?? "",
+                Area = i.Area ?? "",
+                Address = i.Address,
+                FirstImageUrl = i.Images.OrderBy(i => i.SortOrder).Select(i => i.Url).FirstOrDefault()
+            }).ToListAsync();
+
+            return properties;
+        }
+
+        public async Task<bool> UpdateAsync(PropertyEditDto dto)
+        {
+            var p = await _db.Properties
+                .Include(x => x.Images)
+                .FirstOrDefaultAsync(x => x.PropertyId == dto.PropertyId);
+
+            if (p == null) return false;
+
+            p.Title = dto.Title;
+            p.Description = dto.Description;
+            p.Price = dto.Price;
+            p.Sqft = dto.Sqft;
+            p.BedRooms = dto.BedRooms;
+            p.Balcony = dto.Balcony;
+            p.Washroom = dto.WashRooms;
+            p.Address = dto.Address;
+            p.Area = dto.Area;
+            p.District = dto.District;
+
+            await _db.SaveChangesAsync();
+            return true;
+        }
+        public async Task DeleteAsync(Property property)
+        {
+            _db.Properties.Remove(property);
+            await _db.SaveChangesAsync();
         }
     }
 }

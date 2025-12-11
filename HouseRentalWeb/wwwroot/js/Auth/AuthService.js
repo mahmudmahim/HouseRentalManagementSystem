@@ -25,6 +25,7 @@ $("#phone").keyup(function () {
 
 $("#btnSignup").click(function (e) {
     e.preventDefault(); // Prevent default form submit
+    ShowLoader();
 
     let password = $("#passWord").val();
     let confirmPassword = $("#cpassWord").val();
@@ -50,7 +51,7 @@ $("#btnSignup").click(function (e) {
         isOwner: isOwner,
         isAdmin: isAdmin
     };
-
+   
     $.ajax({
         url: "https://localhost:7152/api/Auth/register",
         method: "POST",
@@ -64,8 +65,10 @@ $("#btnSignup").click(function (e) {
                 setTimeout(() => {
                     window.location.href = "/Auth/Login";
                 }, 3000);
+                HideLoader();
             } else {
                 toastr.error(res.message);
+                HideLoader();
             }
         },
 
@@ -127,11 +130,21 @@ function checkUnique(field, value) {
 $("#btnLogIn").click(function (e) {
     e.preventDefault();
 
+    const btn = $(this);
+
+    // Disable button + show spinner
+    btn.prop("disabled", true);
+    const oldHtml = btn.html();
+    btn.data("old-html", oldHtml);   // Save old text
+
+    btn.html(`
+        <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+        Processing...`);
+
     const request = {
         email: $("#txtemail").val(),
         password: $("#txtpass").val()
     };
-
     $.ajax({
         url: "https://localhost:7152/api/Auth/login",
         method: "POST",
@@ -141,6 +154,10 @@ $("#btnLogIn").click(function (e) {
         success: function (res) {
             if (!res.success) {
                 toastr.error(res.message);
+
+                btn.prop("disabled", false);
+                btn.html(btn.data("old-html"));
+
                 return;
             }
 
@@ -165,6 +182,10 @@ $("#btnLogIn").click(function (e) {
 
         error: function () {
             toastr.error("Server error. Try again.");
+
+            // Restore button
+            btn.prop("disabled", false);
+            btn.html(btn.data("old-html"));
         }
     });
 });

@@ -49,10 +49,10 @@ namespace HouseRentalAPI.Controllers.PropertyController
             }
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        [HttpGet("editproperty/{id}")]
+        public async Task<IActionResult> GetPropertyById(int id)
         {
-            var p = await _service.GetByIdAsync(id);
+            var p = await _service.GetPropertyById(id);
 
             if (p == null)
                 return NotFound();
@@ -79,6 +79,32 @@ namespace HouseRentalAPI.Controllers.PropertyController
             };
 
             return Ok(dto);
+        }
+
+        [HttpGet("owner/{ownerId}")]
+        public async Task<IActionResult> GetPropertiesByOwner(string ownerId)
+        {
+            var props = await _service.GetPropertiesByOwner(ownerId);
+            return Ok(props);
+        }
+
+        [HttpPut("update")]
+        public async Task<IActionResult> UpdateProperty([FromBody] PropertyEditDto dto)
+        {
+            var r = await _service.UpdateAsync(dto);
+            if (!r) return BadRequest("Update failed.");
+            return Ok(new { message = "Updated successfully" });
+        }
+
+        [HttpDelete("delete/{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var property = await _service.GetPropertyById(id);
+            if (property == null)
+                return NotFound();
+
+            await _service.DeleteAsync(property);
+            return Ok(new { message = "Deleted successfully" });
         }
     }
 }

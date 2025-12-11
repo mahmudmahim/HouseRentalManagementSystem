@@ -45,17 +45,56 @@
     background: linear-gradient(135deg,#fb7185,#f97316);
 }
 
-/* Property card */
+
+/* ===== Navigation Pills ===== */
+.nav-pills .nav-link {
+    color: #555;
+    font-weight: 600;
+    border-radius: 30px;
+    padding: 8px 20px;
+    transition: all 0.3s ease;
+}
+
+    .nav-pills .nav-link.active {
+        background: linear-gradient(90deg, #007cf0 0%, #00dfd8 100%);
+        color: #fff;
+        box-shadow: 0 4px 12px rgba(0, 223, 216, 0.25);
+    }
+
+/* ===== Property Card ===== */
 .property-card {
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 6px 20px rgba(31,45,77,0.06);
-    transition: transform .2s ease;
+    transition: all 0.3s ease;
 }
 
     .property-card:hover {
-        transform: translateY(-6px);
+        transform: translateY(-4px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.08);
     }
+
+.property-image img {
+    height: 180px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.property-card:hover .property-image img {
+    transform: scale(1.05);
+}
+
+/* ===== Buttons ===== */
+.btn-gradient {
+    background: linear-gradient(90deg, #8b5cf6 0%, #6366f1 100%);
+    color: #fff;
+    border: none;
+    box-shadow: 0 2px 8px rgba(99,102,241,0.4);
+    transition: all 0.2s ease;
+}
+
+    .btn-gradient:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(99,102,241,0.5);
+    }
+
 
 /* Badges */
 .badge {
@@ -63,10 +102,10 @@
     padding: .35rem .6rem;
 }
 
-
 input[type="range"]::-webkit-slider-thumb {
     background: #6366f1;
 }
+
 
 
 /* Small responsive fix */
