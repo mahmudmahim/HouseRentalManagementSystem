@@ -23,7 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\API\HouseRentalAPI.csproj" />
     <ProjectReference Include="..\Application\HouseRentalApplication.csproj" />
     <ProjectReference Include="..\Domain\HouseRentalDomain.csproj" />
     <ProjectReference Include="..\Infrastructure\HouseRentalInfrastructure.csproj" />
