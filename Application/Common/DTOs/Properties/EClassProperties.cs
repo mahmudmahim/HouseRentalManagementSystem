@@ -39,9 +39,44 @@ namespace HouseRentalApplication.Common.DTOs.Properties
             public int SortOrder { get; set; }
         }
 
+        public class PropertyListDto
+        {
+            public int PropertyId { get; set; }
+            public string Title { get; set; } = "";
+            public decimal Price { get; set; }
+            public int Sqft { get; set; }
+            public string District { get; set; } = "";
+            public string Area { get; set; } = "";
+            public string Address { get; set; } = "";
+            public string? FirstImageUrl { get; set; }
+        }
+
         public class FileUploadDto
         {
             public IFormFile File { get; set; }
+        }
+
+        public class PropertyEditDto
+        {
+            public int PropertyId { get; set; }
+            public string Title { get; set; }
+            public string Description { get; set; }
+            public decimal Price { get; set; }
+            public int Sqft { get; set; }
+            public int BedRooms { get; set; }
+            public int Balcony { get; set; }
+            public int WashRooms { get; set; }
+            public string Address { get; set; }
+            public string Area { get; set; }
+            public string District { get; set; } = string.Empty;
+
+            public List<PropertyImageEditDto> Images { get; set; } = new();
+        }
+
+        public class PropertyImageEditDto
+        {
+            public int ImageId { get; set; }
+            public string ImageUrl { get; set; }
         }
     }
 }

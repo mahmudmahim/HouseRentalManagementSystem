@@ -12,7 +12,10 @@ namespace HouseRentalApplication.Common.Interfaces.Properties
     public interface IPropertyService
     {
         Task<Property> CreateAsync(PropertyCreateDto dto);
-        Task<Property?> GetByIdAsync(int id);
+        Task<Property?> GetPropertyById(int id);
+        Task<List<PropertyListDto>> GetPropertiesByOwner(string ownerId);
+        Task<bool> UpdateAsync(PropertyEditDto dto);
+        Task DeleteAsync(Property property);
     }
 
     public interface IImageService
