@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HouseRentalInfrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251208102554_HouseRentalSystem")]
-    partial class HouseRentalSystem
+    [Migration("20251230173355_HouseRentalManagementSystem")]
+    partial class HouseRentalManagementSystem
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

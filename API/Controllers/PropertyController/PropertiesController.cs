@@ -88,6 +88,14 @@ namespace HouseRentalAPI.Controllers.PropertyController
             return Ok(props);
         }
 
+        [HttpGet("properties")]
+
+        public async Task<IActionResult> GetAllProperties()
+        {
+            var properties = await _service.GetAllPropertiesAsync();
+            return Ok(properties);
+        }
+
         [HttpPut("update")]
         public async Task<IActionResult> UpdateProperty([FromBody] PropertyEditDto dto)
         {
