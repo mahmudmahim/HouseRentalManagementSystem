@@ -107,6 +107,32 @@ namespace HouseRentalInfrastructure.Services.PropertyService
             return properties;
         }
 
+        public async Task<List<PropertyCreateDto>> GetAllPropertiesAsync()
+        {
+            var property = await _db.Properties.AsNoTracking().Select(p => new PropertyCreateDto
+            {
+                PropertyId = p.PropertyId,
+                Description = p.Description ?? string.Empty,
+                Title = p.Title,
+                Price = p.Price,
+                Sqft = p.Sqft,
+                Bedrooms = p.BedRooms,
+                Balcony = p.Balcony,
+                Washroom = p.Washroom,
+                District = p.District ?? "",
+                Area = p.Area ?? "",
+                Address = p.Address,
+                Images = p.Images!.OrderBy(i => i.SortOrder).Select(i => new PropertyImageDto
+                {
+                    Url = i.Url,
+                    SortOrder = i.SortOrder
+                }).ToList()
+            }).ToListAsync();
+
+            return property;
+        }
+
+
         public async Task<bool> UpdateAsync(PropertyEditDto dto)
         {
             var p = await _db.Properties

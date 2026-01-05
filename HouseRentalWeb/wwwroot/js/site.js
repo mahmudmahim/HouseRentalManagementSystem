@@ -1,7 +1,4 @@
 ﻿
-
-
-
 const sidebar = document.getElementById('sidebar');
 const toggleBtn = document.getElementById('sidebarToggle');
 const mainContent = document.getElementById('mainContent');

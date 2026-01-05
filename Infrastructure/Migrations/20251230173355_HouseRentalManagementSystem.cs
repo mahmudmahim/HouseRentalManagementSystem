@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HouseRentalInfrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class HouseRentalSystem : Migration
+    public partial class HouseRentalManagementSystem : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

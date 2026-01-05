@@ -14,6 +14,7 @@ namespace HouseRentalApplication.Common.Interfaces.Properties
         Task<Property> CreateAsync(PropertyCreateDto dto);
         Task<Property?> GetPropertyById(int id);
         Task<List<PropertyListDto>> GetPropertiesByOwner(string ownerId);
+        Task<List<PropertyCreateDto>> GetAllPropertiesAsync();
         Task<bool> UpdateAsync(PropertyEditDto dto);
         Task DeleteAsync(Property property);
     }
