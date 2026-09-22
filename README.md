@@ -13,6 +13,7 @@ Whether you're a **tenant** searching for your next stay or a **landlord** listi
 
 ---
 
+
 ## ✨ Core Features
 
 ### 🧭 Property Search & Filtering
